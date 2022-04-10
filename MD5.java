@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -35,9 +34,9 @@ public class MD5 {
 			e.printStackTrace();
 		}
 			
-		FileWriter arq = new FileWriter("/Users/procob/Downloads/Criptografia/autenticacao.txt", true);
+		FileWriter arq = new FileWriter("autenticacao.txt", true);
 		PrintWriter gravarArq = new PrintWriter(arq);
-		FileReader reader = new FileReader("/Users/procob/Downloads/Criptografia/autenticacao.txt");
+		FileReader reader = new FileReader("autenticacao.txt");
 		BufferedReader leitor = new BufferedReader(reader);
 	
 			
@@ -90,8 +89,6 @@ public class MD5 {
 					System.out.printf("Informe sua senha: \n");
 					senhaAutenticacao = lerUsuario.nextLine();
 					
-					lerUsuario.close();
-					
 				    m.update(senhaAutenticacao.getBytes(),0,senhaAutenticacao.length());
 				    String hash2 = new BigInteger(1,m.digest()).toString(16);
 
@@ -101,19 +98,24 @@ public class MD5 {
 						linha = leitor.readLine();
 						if(linha.contains(usuarioAutenticacao+",")) {
 							userFound = linha.split(", ");
-//							System.out.println(userFound[1]);
-//							System.out.println(userFound[0]);
 							
 							if(usuarioAutenticacao.equals(userFound[0]) && hash2.equals(userFound[1])) {
 								System.out.print("\n\nCREDENCIAIS CORRETAS");
+								lerUsuario.close();
+								break;
 							}else {
 								System.out.print("\n\nCREDENCIAIS INCORRETAS");
+								lerUsuario.close();
+								break;
 							}
 		
-							break;
+							
 						}
 					}while((linha = leitor.readLine()) != null);
 					
+					if(linha == null) {
+						System.out.print("\n\nUSUÁRIO NÃO ENCONTRADO");
+					}
 					
 					leitor.close();
 			}
